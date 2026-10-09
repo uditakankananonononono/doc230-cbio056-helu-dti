@@ -30,3 +30,7 @@ README first line states whether D2 passed and which of D3-D9 fired. A positive 
 
 ## Disclosure at lock time
 src/run056.py has been syntax-checked only; it has not been executed on any data or labels when this lock is committed. No pre-commit crash test was done. Bugs found when first running it will be fixed in separate, disclosed commits that change code paths only, never the gates, splits, seeds or hyperparameters above. Metric keys and Hetionet edge-orientation handling are implementation details that may be corrected the same way.
+
+
+## Provenance note (added after gate review)
+The public server time of this lock cannot be shown: the repository was first pushed after the results commit. Order of commits in a single history plus run logs is the only support; this is not a verified preregistration.
