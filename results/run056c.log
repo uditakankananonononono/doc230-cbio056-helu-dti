@@ -1,3 +1,25 @@
 01:56:00 features ready (11656, 2048) (3032, 320)
 02:00:27 cold_BindingDB {"cold_drug": [0.8393550892003118, null], "cold_protein": [0.8012559913246114, 0.840727296209489], "cold_both": [0.6774747225696783, 0.7329743176497002]}
 02:04:31 cold_BioSNAP {"cold_drug": [0.8513116963262428, null], "cold_protein": [0.8587777932018749, 0.821463805394543], "cold_both": [0.7809310124712988, 0.7329731995693639]}
+02:07:48 D8 {"coverage": {"drug_rows_with_kg": 0.3489793690645126, "gene_rows_with_kg": 0.0}, "cold_both": {"M1": {"auroc_mean": 0.7809310124712988, "auroc_sd": 0.0024417855684749773, "auprc_mean": 0.8063605239725806, "acc_mean": 0.7173851789236405, "n": 1183, "pos": 0.4987320371935757}, "M1_KG": {"auroc_mean": 0.7907451339068797, "auroc_sd": 0.0054855439258856865, "auprc_mean": 0.8141570604413494, "acc_mean"
+[02:08:10] Warning: ambiguous stereochemistry - opposing bonds have opposite wedging - at atom 14 ignored.
+[02:08:10] Warning: ambiguous stereochemistry - opposing bonds have opposite wedging - at atom 14 ignored.
+Loading weights:   0%|          | 0/102 [00:00<?, ?it/s]Loading weights: 100%|██████████| 102/102 [00:00<00:00, 1167.29it/s]
+[transformers] [1mEsmModel LOAD REPORT[0m from: facebook/esm2_t6_8M_UR50D
+Key                       | Status     | 
+--------------------------+------------+-
+lm_head.dense.weight      | UNEXPECTED | 
+lm_head.dense.bias        | UNEXPECTED | 
+lm_head.layer_norm.weight | UNEXPECTED | 
+lm_head.bias              | UNEXPECTED | 
+lm_head.layer_norm.bias   | UNEXPECTED | 
+pooler.dense.weight       | MISSING    | 
+pooler.dense.bias         | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+02:08:33 esm 0 26
+02:09:31 D9 {"status": "tested", "coverage": {"drugs_total": 54, "drugs_ok": 54, "prots_total": 26, "prots_ok": 26}, "positives": 90, "pairs": 1404, "M1": {"auroc": 0.5166878065279892, "auprc": 0.0809934013052293, "acc": 0.3903133903133903, "n": 1404, "pos": 0.0641025641025641}, "protein_only_rf": {"auroc": 0.6365296803652969, "auprc": 0.10613314837305216, "acc": 0.3789173789173789, "n": 1404, "pos": 0.064102
+02:09:31 DONE
+exit 0

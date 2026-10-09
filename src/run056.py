@@ -125,7 +125,7 @@ def main():
 def get(url,fn):
     if not os.path.exists(fn): urllib.request.urlretrieve(url,fn)
     return fn
-def kg_test(data,F):
+def kg_test(data,F,acc2sym=None):
     H='https://github.com/hetio/hetionet/raw/main/hetnet/tsv/'
     ed=pd.read_csv(get(H+'hetionet-v1.0-edges.sif.gz',D+'het_edges.sif.gz'),sep='\t',compression='gzip'); nd=pd.read_csv(get(H+'hetionet-v1.0-nodes.tsv',D+'het_nodes.tsv'),sep='\t')
     sym={n:i for i,n,k in zip(nd['id'],nd['name'],nd['kind']) if k=='Gene'}
@@ -153,8 +153,9 @@ def kg_test(data,F):
     Sd=TruncatedSVD(64,random_state=0).fit_transform(Md).astype(np.float32); Sg=TruncatedSVD(64,random_state=0).fit_transform(Mg).astype(np.float32)
     cidx={c.replace('Compound::',''):i for i,c in enumerate(comps)}; gidx={g:i for i,g in enumerate(gens)}
     al=pd.concat([data['BioSNAP'][s] for s in ('train','val','test')],ignore_index=True); pr=Pairs(al,F)
-    dkg=np.array([Sd[cidx[x]] if x in cidx else np.zeros(64,np.float32) for x in al['DrugBank ID']]);gkg=np.array([Sg[gidx[sym[x]]] if x in sym and sym[x] in gidx else np.zeros(64,np.float32) for x in al['Gene']])
-    cov=dict(drug_rows_with_kg=float(np.mean([x in cidx for x in al['DrugBank ID']])),gene_rows_with_kg=float(np.mean([x in sym and sym[x] in gidx for x in al['Gene']])))
+    dkg=np.array([Sd[cidx[x]] if x in cidx else np.zeros(64,np.float32) for x in al['DrugBank ID']]);gm=(lambda x:acc2sym.get(x,x)) if acc2sym else (lambda x:x)
+    gkg=np.array([Sg[gidx[sym[gm(x)]]] if gm(x) in sym and sym[gm(x)] in gidx else np.zeros(64,np.float32) for x in al['Gene']])
+    cov=dict(drug_rows_with_kg=float(np.mean([x in cidx for x in al['DrugBank ID']])),gene_rows_with_kg=float(np.mean([gm(x) in sym and sym[gm(x)] in gidx for x in al['Gene']])))
     rs=np.random.RandomState(0); ud=np.unique(pr.dix);up=np.unique(pr.pix); hd=set(rs.permutation(ud)[:int(0.2*len(ud))]);hp=set(rs.permutation(up)[:int(0.2*len(up))])
     din=np.array([d in hd for d in pr.dix]);pin=np.array([p in hp for p in pr.pix]); tri=np.where(~din&~pin)[0];tei=np.where(din&pin)[0]
     off=len(data['BioSNAP']['train']);offv=len(data['BioSNAP']['val']); otr=np.arange(off); ote=np.arange(off+offv,len(al))
