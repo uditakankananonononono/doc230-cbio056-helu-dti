@@ -1,0 +1,25 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/102 [00:00<?, ?it/s]Loading weights: 100%|██████████| 102/102 [00:00<00:00, 8949.63it/s]
+[transformers] [1mEsmModel LOAD REPORT[0m from: facebook/esm2_t6_8M_UR50D
+Key                       | Status     | 
+--------------------------+------------+-
+lm_head.bias              | UNEXPECTED | 
+lm_head.dense.weight      | UNEXPECTED | 
+lm_head.layer_norm.weight | UNEXPECTED | 
+lm_head.layer_norm.bias   | UNEXPECTED | 
+lm_head.dense.bias        | UNEXPECTED | 
+pooler.dense.weight       | MISSING    | 
+pooler.dense.bias         | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+01:37:50 esm 0 3032
+01:38:27 esm 500 3032
+01:39:14 esm 1000 3032
+01:39:58 esm 1500 3032
+01:40:38 esm 2000 3032
+01:41:23 esm 2500 3032
+01:42:00 esm 3000 3032
+01:42:01 features ready (11656, 2048) (3032, 320)
+01:42:02 D1 {'unparsable_smiles_unique': 4, 'BindingDB': {'train': {'n': 12668, 'pos_rate': 0.5}, 'val': {'n': 6644, 'pos_rate': 0.13952438290186633}, 'test': {'n': 13289, 'pos_rate': 0.1433516442170216}, 'test_pairs_drug_seen_in_train': 0.7978779441643464, 'test_pairs_prot_seen_in_train': 0.9797576943336594, 'test_pairs_both_seen': 0.7921589284370532}, 'BioSNAP': {'train': {'n': 19238, 'pos_rate': 0.5026510032227882}, 'val': {'n': 2748, 'pos_rate': 0.5080058224163028}, 'test': {'n': 5497, 'pos_rate': 0.5039112243041659}, 'test_pairs_drug_seen_in_train': 0.9725304711660906, 'test_pairs_prot_seen_in_train': 0.9976350736765508, 'test_pairs_both_seen': 0.9703474622521375}}

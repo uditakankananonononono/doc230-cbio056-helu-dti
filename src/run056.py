@@ -47,7 +47,7 @@ def features(frames):
 # ---------- models
 def mlp_fit_predict(Xtr,ytr,Xte,seed,epochs=15):
     torch.manual_seed(seed); g=torch.Generator().manual_seed(seed)
-    mu=Xtr.mean(0);sd=Xtr.std(0)+1e-6; Xt=torch.tensor((Xtr-mu)/sd);yt=torch.tensor(ytr,dtype=torch.float32);Xe=torch.tensor((Xte-mu)/sd)
+    mu=Xtr.mean(0,dtype=np.float32);sd=(Xtr.std(0)+1e-6).astype(np.float32); Xt=torch.from_numpy((Xtr-mu)/sd);yt=torch.tensor(ytr,dtype=torch.float32);Xe=torch.from_numpy((Xte-mu)/sd)
     m=torch.nn.Sequential(torch.nn.Linear(Xt.shape[1],512),torch.nn.ReLU(),torch.nn.Dropout(0.2),torch.nn.Linear(512,512),torch.nn.ReLU(),torch.nn.Dropout(0.2),torch.nn.Linear(512,1))
     opt=torch.optim.Adam(m.parameters(),1e-3); lf=torch.nn.BCEWithLogitsLoss()
     for ep in range(epochs):
@@ -55,6 +55,7 @@ def mlp_fit_predict(Xtr,ytr,Xte,seed,epochs=15):
         for i in range(0,len(Xt),256):
             b=perm[i:i+256]; loss=lf(m(Xt[b]).squeeze(1),yt[b]); opt.zero_grad();loss.backward();opt.step()
     m.eval()
+    import gc;gc.collect()
     with torch.no_grad(): return torch.sigmoid(m(Xe).squeeze(1)).numpy()
 def rf_fit_predict(Xtr,ytr,Xte): return RF(300,max_features='sqrt',n_jobs=2,random_state=0).fit(Xtr,ytr).predict_proba(Xte)[:,1]
 def met(y,p): return dict(auroc=float(roc_auc_score(y,p)),auprc=float(average_precision_score(y,p)),acc=float(accuracy_score(y,p>0.5)),n=int(len(y)),pos=float(np.mean(y)))
